@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:wakelock/wakelock.dart';
 
 void main() => runApp(RandomTimerApp());
 
@@ -58,6 +59,7 @@ class _RandomTimerHomePageState extends State<RandomTimerHomePage> {
 
   void _start() {
     setState(() {
+      Wakelock.enable();
       _phase = _RandomTimerPhase.timing;
       timings[_phase] = DateTime.now();
       _seconds = _lowerBound + _random.nextInt(_upperBound - _lowerBound + 1);
@@ -79,6 +81,7 @@ class _RandomTimerHomePageState extends State<RandomTimerHomePage> {
 
   void _stop() {
     setState(() {
+      Wakelock.disable();
       if (_audioPlayer != null) {
         _audioPlayer.stop();
         _audioPlayer = null;
